@@ -7,7 +7,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>17</maven.compiler.release>
-        <exec.mainClass>org.nmascrie.swingy.Swingy</exec.mainClass>
+        <exec.mainClass>org.nmascrie.swingy.controllers.MainController</exec.mainClass>
     </properties>
     <dependencies>
         <dependency>
@@ -33,7 +33,7 @@
                 <manifest>
                     <addClasspath>true</addClasspath>
                     <classpathPrefix>lib/</classpathPrefix>
-                    <mainClass>org.nmascrie.swingy.Swingy</mainClass>
+                    <mainClass>org.nmascrie.swingy.controllers.MainController</mainClass>
                 </manifest>
                 </archive>
             </configuration>

@@ -5,7 +5,7 @@ package org.nmascrie.swingy.enums;
  */
 public enum HeroClass {
     SCOUT(80, 10, 8, 20, 0.05f, 0.12f, "Scout"),
-    DRILLER(120, 20, 12, 10, 0.05f, 0.04f, "Driller"),
+    DRILLER(120, 25, 5, 10, 0.05f, 0.04f, "Driller"),
     GUNNER(150, 15, 20, 8, 0.05f, 0.03f, "Gunner"),
     ENGINEER(100, 12, 12, 12, 0.1f, 0.05f, "Engineer");
 
@@ -25,5 +25,10 @@ public enum HeroClass {
         this.crit = crit;
         this.dodge = dodge;
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }

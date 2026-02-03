@@ -22,6 +22,8 @@ public class Character extends Creature implements Serializable {
     private Item boots = null; //GIVES DODGE
     private Item belt = null; //GIVES SPEED
     private Item ammos = null; //GIVES CRIT
+    public int kills = 0;
+    public int explored = 0;
 
     public Character(String c_name, HeroClass hc) {
         super(c_name, 1, hc.atk, hc.def, hc.hp, hc.speed);
@@ -188,7 +190,7 @@ public class Character extends Creature implements Serializable {
     }
 
     public static Character imports(String char_name) {
-        File path = new File("saves/" + char_name + ".dwarf");
+        File path = new File("saves/" + char_name);
         Object data = null;
 
         try(ObjectInputStream inFile = new ObjectInputStream(new FileInputStream(path)))

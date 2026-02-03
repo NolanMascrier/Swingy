@@ -10,11 +10,11 @@ record Pos(int x, int y) {}
 public class Map {
     private final ArrayList<Cell> mapCells;
     private final HashMap<Pos, Entity> entityLst;
-    private final int size;
+    private final long size;
     private Entity hero;
 
 
-    public Map(int size, Character hero, int level) {
+    public Map(long size, Character hero, long level) {
 
         this.size = size;
         this.mapCells = new ArrayList<>();
@@ -32,10 +32,10 @@ public class Map {
     /**
      * Generate random monsters on the map.
      */
-    private void generateMonsters(int level) {
-        int max = Math.max(size * size / 25, 15);
-        int min = Math.max(size * size / 50, 5);
-        int count = (int)(Math.random() * (max - min)) + min;
+    private void generateMonsters(long level) {
+        long max = Math.max(size * size / 25, 15);
+        long min = Math.max(size * size / 50, 5);
+        long count = (int)(Math.random() * (max - min)) + min;
 
         int placed = 0;
         int attempts = 0;
@@ -62,8 +62,8 @@ public class Map {
      * Generate walkable tunnels inside the map.
      */
     private void generateTunnels(Character hero) {
-        int cx = this.size / 2;
-        int cy = this.size / 2;
+        long cx = this.size / 2;
+        long cy = this.size / 2;
         int dx;
         int dy;
         int tunnels = (int)(this.size / 5 + 1);
@@ -84,9 +84,9 @@ public class Map {
     /**
      * Carves a random single tunnel from the starting point to a border.
      */
-    private void carveTunnel(int startX, int startY) {
-        int x = startX;
-        int y = startY;
+    private void carveTunnel(long startX, long startY) {
+        long x = startX;
+        long y = startY;
         int lastDir = -1;
         int target = pickTargetSide();
         int dir;
@@ -148,7 +148,7 @@ public class Map {
     /**
      * Checks if the given cell is a border.
      */
-    private boolean isBorder(int x, int y) {
+    private boolean isBorder(long x, long y) {
         return x == 0 || y == 0 || x == this.size - 1 || y == this.size - 1;
     }
 
