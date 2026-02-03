@@ -139,6 +139,30 @@ public class Character extends Creature implements Serializable {
         return buffer;
     }
 
+    public Item getEquipped(ItemType type) {
+        switch (type) {
+            case HELM -> {
+                return this.helmet;
+            }
+            case ARMOR -> {
+                return this.armor;
+            }
+            case WEAPON -> {
+                return this.weapon;
+            }
+            case BOOTS -> {
+                return this.boots;
+            }
+            case BELT -> {
+                return this.belt;
+            }
+            case AMMOS -> {
+                return this.ammos;
+            }
+        }
+        return null;
+    }
+
     @Override
     public String toString() {
         return this.name + ", " + this.classe.name +

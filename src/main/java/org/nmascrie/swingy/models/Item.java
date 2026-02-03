@@ -46,6 +46,42 @@ public class Item implements Serializable {
     }
 
     /**
+     * Returns a more complete description of the item.
+     */
+    public String fullDesc() {
+        String stat = "";
+
+        switch (this.type) {
+            case HELM -> stat = "HITPOINTS +";
+            case ARMOR -> stat = "DEFENSE +";
+            case WEAPON -> stat = "POWER +";
+            case AMMOS -> stat = "CRIT CHANCE +";
+            case BOOTS -> stat = "DODGE CHANCE +";
+            case BELT -> stat = "SPEED +";
+        }
+        return this + " -> " + stat + this.value;
+    }
+
+    /**
+     * Compares the new item to the current one.
+     */
+    public String compare(Item newItem) {
+        String stat = "";
+
+        switch (this.type) {
+            case HELM -> stat = "HITPOINTS +";
+            case ARMOR -> stat = "DEFENSE +";
+            case WEAPON -> stat = "POWER +";
+            case AMMOS -> stat = "CRIT CHANCE +";
+            case BOOTS -> stat = "DODGE CHANCE +";
+            case BELT -> stat = "SPEED +";
+        }
+        if (this.type == ItemType.AMMOS || this.type == ItemType.BOOTS)
+            return this + "(" + stat + (this.value * 100) + "%) -> " + newItem + "(" + stat + (newItem.value * 100) + "%)";
+        return this + "(" + stat + this.value + ") -> " + newItem + "(" + stat + newItem.value + ")";
+    }
+
+    /**
      * @return Level of the item.
      */
     public long getLevel() {

@@ -20,6 +20,14 @@ public class BattleScene {
         this.initiative_r = a.getSpeed() * b.getSpeed();
     }
 
+    public Creature getRight() {
+        return right;
+    }
+
+    public Creature getLeft() {
+        return left;
+    }
+
     /**
      * Log object containing the data of the attack and possible messages.
      */

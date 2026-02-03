@@ -3,9 +3,10 @@ package org.nmascrie.swingy.models;
 /**
  * Vector to hold 2D positions
  */
-class Vec2D {
+public class Vec2D {
     public float x;
     public float y;
+    public Vec2D last = null;
 
     public Vec2D(float x, float y) {
         this.x = x;
@@ -19,8 +20,14 @@ class Vec2D {
      * @param dy Delta Y
      */
     public void move(float dx, float dy) {
+        Vec2D buffer;
+
         this.x += dx;
         this.y += dy;
+
+        buffer = new Vec2D(dx, dy);
+        buffer.last = this.last;
+        this.last = buffer;
     }
 
     /**
@@ -29,8 +36,26 @@ class Vec2D {
      * @param vec Second vector to add.
      */
     public void move(Vec2D vec) {
+        Vec2D buffer;
+
         this.x += vec.x;
         this.y += vec.y;
+        
+        buffer = new Vec2D(vec.x, vec.y);
+        buffer.last = this.last;
+        this.last = buffer;
+    }
+
+    /**
+     * Reverts the vector to its last known position.
+     */
+    public void revert() {
+        System.out.println("This at " + this + ", previous at " + this.last);
+        if (null == this.last) 
+            return ;
+        this.x -= this.last.x;
+        this.y -= this.last.y;
+        this.last = this.last.last;
     }
 
     /**
