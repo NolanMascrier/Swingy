@@ -1,12 +1,8 @@
 package org.nmascrie.swingy;
 
 import org.nmascrie.swingy.enums.HeroClass;
-import org.nmascrie.swingy.generators.EnemyGenerator;
 import org.nmascrie.swingy.generators.ItemGenerator;
-import org.nmascrie.swingy.models.BattleScene;
 import org.nmascrie.swingy.models.Character;
-import org.nmascrie.swingy.models.Creature;
-import org.nmascrie.swingy.models.Item;
 
 /**
  *
@@ -20,8 +16,9 @@ public class Swingy {
         System.out.println(gimli);
         System.out.println("\n###\n#\n###");
         int survive = 0;
+        gimli.equip(ItemGenerator.getInstance().generateItem(5, 1, 1));
 
-        while (gimli.getCurrent_hp() > 0) { 
+        /*while (gimli.getCurrent_hp() > 0) { 
             try {
                 Creature steeve = EnemyGenerator.getInstance().generateCreature(6 + (int)(survive / 4) + gimli.getLevel());
                 BattleScene scene = new BattleScene(gimli, steeve);
@@ -48,8 +45,10 @@ public class Swingy {
                 }
             } catch (InterruptedException e) {
             }
-        }
-
+        }*/
         System.out.println(gimli.getName() + " survived against " + survive + " enemies on Hoxxes 3 and died.");
+        gimli.exports();
+        Character cha = Character.imports("Gimli");
+        System.out.println(cha);
     }
 }

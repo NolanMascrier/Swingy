@@ -1,12 +1,14 @@
 package org.nmascrie.swingy.models;
 
+import java.io.Serializable;
+
 import org.nmascrie.swingy.enums.ItemType;
 import org.nmascrie.swingy.enums.Rarity;
 
 /**
  * Class for items.
  */
-public class Item {
+public class Item implements Serializable {
     private long level;
     private float value;
     private Rarity rarity = Rarity.COMMON;

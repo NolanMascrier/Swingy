@@ -1,5 +1,12 @@
 package org.nmascrie.swingy.models;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+
 import org.nmascrie.swingy.enums.HeroClass;
 import org.nmascrie.swingy.enums.ItemType;
 
@@ -7,7 +14,7 @@ import org.nmascrie.swingy.enums.ItemType;
  * A character is a specific creature that has a class and items.
  * It is meant to be the player character.
  */
-public class Character extends Creature {
+public class Character extends Creature implements Serializable {
     private HeroClass classe = HeroClass.SCOUT;
     private Item helmet = null; //GIVES HEALTH
     private Item armor = null; //GIVES DEFENSE
@@ -142,6 +149,33 @@ public class Character extends Creature {
             "\nCRIT CHANCE: " + this.getCrit() * 100 +"%" +
             "\nWEAPON: " + this.weapon + "\nAMMOS: " + this.ammos + "\nHELM: " + this.helmet +
             "\nARMOR: " + this.armor + "\nBELT: " + this.belt + "\nBOOTS: " + this.boots;
+    }
+
+    /**
+     * Exports the character as a save file.
+     */
+    public void exports() {
+        File path = new File("saves/" + this.getName() + ".dwarf");
+        try (ObjectOutputStream write = new ObjectOutputStream (new FileOutputStream(path))) {
+            write.writeObject(this);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
+    }
+
+    public static Character imports(String char_name) {
+        File path = new File("saves/" + char_name + ".dwarf");
+        Object data = null;
+
+        try(ObjectInputStream inFile = new ObjectInputStream(new FileInputStream(path)))
+        {
+            data = inFile.readObject();
+            return (Character)data;
+        } catch(Exception e)
+        {
+            System.err.println(e);
+        }
+        return (Character)data;
     }
 
     public HeroClass getClasse() {

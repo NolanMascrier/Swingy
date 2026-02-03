@@ -1,11 +1,13 @@
 package org.nmascrie.swingy.models;
 
+import java.io.Serializable;
+
 import org.nmascrie.swingy.enums.AttackResult;
 
 /**
  * Creature class, that holds the data for both players and enemies. 
  */
-public class Creature {
+public class Creature implements Serializable{
     protected String name;
     protected long level = 1;
     protected long experience = 0;
