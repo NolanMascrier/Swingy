@@ -173,8 +173,12 @@ public class Character extends Creature implements Serializable {
             "\nPOWER: " + this.getAttack() +"\nDEFENSE: " + this.getDefense() +
             "\nSPEED: " + this.getSpeed() +"\nDODGE CHANCE: " + this.getDodge() * 100 + "%" +
             "\nCRIT CHANCE: " + this.getCrit() * 100 +"%" +
-            "\nWEAPON: " + this.weapon + "\nAMMOS: " + this.ammos + "\nHELM: " + this.helmet +
-            "\nARMOR: " + this.armor + "\nBELT: " + this.belt + "\nBOOTS: " + this.boots;
+            "\nWEAPON: " + ((null != this.weapon) ? this.weapon : "Knuckle Sandwich") + 
+            "\nAMMOS: " + ((null != this.ammos) ? this.ammos : "Powerful fingers") + 
+            "\nHELM: " + ((null != this.helmet) ? this.helmet : "Most glorious beard") +
+            "\nARMOR: " + ((null != this.armor) ? this.armor : "Glory laid bare") + 
+            "\nBELT: " + ((null != this.belt) ? this.belt : "Beard pouch") + 
+            "\nBOOTS: " + ((null != this.boots) ? this.boots : "Powerful dwarven toes");
     }
 
     /**

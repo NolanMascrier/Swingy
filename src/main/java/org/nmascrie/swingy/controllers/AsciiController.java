@@ -30,6 +30,7 @@ class AsciiController {
         String scanned;
         try {
             scanned = this.scan.nextLine();
+            @SuppressWarnings("unused")
             char a = scanned.charAt(0);
         } catch (StringIndexOutOfBoundsException e) {
             return " ";
@@ -104,7 +105,7 @@ class AsciiController {
         System.out.println("1 - Gunner: A solid but slow fighter.");
         System.out.println("2 - Scout:  A swift yet fragile warrior. Can dodge attacks.");
         System.out.println("3 - Engineer: A soldier with balanced abilities and high critical chance.");
-        System.out.println("4 - Driller: A powerful and dangerous madman that forgoes defenses.");
+        System.out.println("4 - Driller: A powerful and dangerous maniac that forgoes defenses.");
         while (true) { 
             choice = this.awaitInput();
             switch (choice.toLowerCase().charAt(0)) {
