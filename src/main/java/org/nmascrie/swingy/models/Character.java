@@ -208,6 +208,75 @@ public class Character extends Creature implements Serializable {
         return (Character)data;
     }
 
+    /**
+     * Let the character speak.
+     */
+    public String speak(String msg) {
+        return this.getName() + " says: " + msg;
+    }
+
+    /**
+     * Says a little something on mission start.
+     */
+    public String startMissionQip() {
+        String[] qips = {
+            "Oh, there's a pebble in me boot",
+            "We're all gonna die!",
+            "I've got a bad feeling about this op.",
+            "Feel like we're digging our own grave!",
+            "I hate this damn planet!",
+            "Only danger and darkness awaits.",
+            "Damn, I forgot me lucky charm.",
+            "This is gonna be a walk in the park!",
+            "Here we go again!",
+            "Here we goooo!",
+            "Time to collect me paycheck.",
+            "That's it, I'm retiring after that one."
+        };
+
+        return this.speak(qips[(int)System.currentTimeMillis() % qips.length]);
+    }
+
+    /**
+     * Says a little something on action.
+     */
+    public String actionQip() {
+        String[] qips = {
+            "That's it lads, Rock and Stone!",
+            "Rock and Stone!",
+            "STONE !",
+            "Did I hear a Rock and Stone?",
+            "I think we actually have a chance to make it out alive!",
+            "This is a friggin' hellhole! ",
+            "I'm having the best time in my life right now!",
+            "Next time, let's go somewhere nice!",
+            "Oh yeah!",
+            "Watch me now!"
+        };
+
+        return this.speak(qips[(int)System.currentTimeMillis() % qips.length]);
+    }
+
+    /**
+     * Says a little something on action.
+     */
+    public String digQip() {
+        String[] qips = {
+            "Diggy Diggity!",
+            "Digging up!",
+            "Booyah!",
+            "Eat it!",
+            "Whack-a-Mole!",
+            "Splat!",
+            "Taste the pickaxe!",
+            "Ow! Me back!",
+            "Oh yeah!",
+            "Watch me now!"
+        };
+
+        return this.speak(qips[(int)System.currentTimeMillis() % qips.length]);
+    }
+
     public HeroClass getClasse() {
         return classe;
     }

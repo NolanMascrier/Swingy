@@ -60,6 +60,8 @@ public class MainFrame extends JFrame {
         addMenu(new NewCharacter(this::showMenu));
         addMenu(new LoadMenu(this::showMenu));
         addMenu(new LevelMenu(this::showMenu));
+        addMenu(new MapMenu(this::showMenu));
+        addMenu(new BattleMenu(this::showMenu));
         showMenu("MainMenu");
     }
 

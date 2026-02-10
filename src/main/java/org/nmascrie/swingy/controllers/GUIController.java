@@ -2,12 +2,16 @@ package org.nmascrie.swingy.controllers;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.function.Consumer;
 
 import javax.swing.UIManager;
 
 import org.nmascrie.swingy.enums.HeroClass;
+import org.nmascrie.swingy.generators.ItemGenerator;
 import org.nmascrie.swingy.models.BattleScene;
 import org.nmascrie.swingy.models.Character;
+import org.nmascrie.swingy.models.Creature;
+import org.nmascrie.swingy.models.Item;
 import org.nmascrie.swingy.models.Map;
 import org.nmascrie.swingy.views.MainFrame;
 
@@ -19,11 +23,11 @@ public class GUIController {
     private Character hero;
     private Map map;
     private BattleScene bs;
-    private String log = "";
+    private final StringBuilder eventLog;
     private static GUIController INSTANCE = null;
 
     private GUIController() {
-        
+        this.eventLog = new StringBuilder();
     }
 
     public static GUIController getInstance() {
@@ -106,19 +110,116 @@ public class GUIController {
         System.out.println("Application started. Press W, A, S, or D keys to see validation in action.");
     }
 
+        /**
+     * Handle the end of a battle
+     * 
+     * @param onDefeat Callback if player is defeated
+     * @param onVictory Callback if player wins, receives Item or null
+     */
+    public void handleBattleEnd(Runnable onDefeat, Consumer<Item> onVictory) {
+        if (bs == null) {
+            return;
+        }
+        
+        Creature player = bs.getRight();
+        Creature enemy = bs.getLeft();
+        
+        if (player.getCurrent_hp() <= 0) {
+            appendLog(player.getName() + " has been defeated!");
+            if (onDefeat != null) {
+                onDefeat.run();
+            }
+            return;
+        }
+        
+        if (enemy.getCurrent_hp() <= 0) {
+            appendLog(enemy.getName() + " has been defeated!");
+            Item loot = ItemGenerator.getInstance().generateItem(
+                enemy.getLevel(),
+                enemy.getLootChance(),
+                enemy.getPower()
+            );
+            
+            if (loot != null) {
+                appendLog("Loot dropped: " + loot.getName());
+            } else {
+                appendLog("No loot dropped.");
+            }
+            
+            long exp = Math.round(
+                enemy.getLevel() * 
+                enemy.getLootChance() * 
+                enemy.getPower()
+            ) * 70;
+            
+            appendLog(hero.getName() + " gained " + exp + " experience!");
+            hero.grantExperience(exp);
+            
+            if (null != map) {
+                map.eliminateMonster();
+                appendLog("Enemy eliminated from map.");
+            }
+            
+            if (onVictory != null) {
+                onVictory.accept(loot);
+            }
+        }
+    }
+
+    /**
+     * Simplified battle end handler for when no loot handling is needed
+     */
+    public void handleBattleEnd(Runnable onComplete) {
+        handleBattleEnd(
+            onComplete,
+            loot -> {
+                if (onComplete != null) {
+                    onComplete.run();
+                }
+            }
+        );
+    }
+
+    /**
+     * Get the event log as a string
+     */
+    public String getLog() {
+        return eventLog.toString();
+    }
+    
+    /**
+     * Append a message to the event log
+     */
+    public void appendLog(String message) {
+        eventLog.append(message).append("\n");
+    }
+    
+    /**
+     * Clear the event log
+     */
+    public void clearLog() {
+        eventLog.setLength(0);
+    }
+    
+    /**
+     * Set the current battle scene
+     */
+    public void setBattleScene(BattleScene battle) {
+        this.bs = battle;
+    }
+    
+    /**
+     * Get the current battle scene
+     */
+    public BattleScene getBattleScene() {
+        return bs;
+    }
+
     public Character getHero() {
         return hero;
     }
 
     public Map getMap() {
         return map;
-    }
-
-    public BattleScene getBs() {
-        return bs;
-    }
-
-    public String getLog() {
-        return log;
     }
 }

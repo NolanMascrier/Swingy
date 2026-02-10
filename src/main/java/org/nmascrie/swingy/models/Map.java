@@ -5,8 +5,6 @@ import java.util.HashMap;
 
 import org.nmascrie.swingy.generators.EnemyGenerator;
 
-record Pos(int x, int y) {}
-
 public class Map {
     private final ArrayList<Cell> mapCells;
     private final HashMap<Pos, Entity> entityLst;
@@ -286,6 +284,27 @@ public class Map {
         Pos pos = new Pos((int)this.hero.getPosition().x, (int)this.hero.getPosition().y);
         if (this.entityLst.containsKey(pos))
             this.entityLst.remove(pos);
+    }
+
+    /**
+     * Get the entity at a specific position (if any)
+     * 
+     * @param x X coordinate
+     * @param y Y coordinate
+     * @return Entity at that position, or null if none
+     */
+    public Entity getEntityAt(int x, int y) {
+        Pos pos = new Pos(x, y);
+        return entityLst.get(pos);
+    }
+    
+    /**
+     * Get all entities on the map (for rendering)
+     * 
+     * @return HashMap of all entities
+     */
+    public HashMap<Pos, Entity> getAllEntities() {
+        return entityLst;
     }
 
     @Override

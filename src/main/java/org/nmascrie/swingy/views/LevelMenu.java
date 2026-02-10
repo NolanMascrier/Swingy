@@ -156,7 +156,7 @@ public class LevelMenu extends BaseMenu {
         }
         GUIController.getInstance().generateMap();
         if (onMenuSwitch != null) {
-            onMenuSwitch.accept("MENU1");
+            onMenuSwitch.accept("Level");
         }
     }
     
