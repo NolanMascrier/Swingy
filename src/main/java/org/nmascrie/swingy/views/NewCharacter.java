@@ -217,8 +217,16 @@ public class NewCharacter extends BaseMenu {
         return "NewChar";
     }
     
+    /**
+     * Handle key press with proper case preservation
+     * Uses KeyEvent.getKeyChar() to get the actual character typed
+     */
     @Override
     public void handleKeyPress(String keyText) {
+        // This method receives the keyText from MainFrame
+        // We need to handle it differently for text input
+        
+        // For backspace
         if (keyText.equals("Back Space") || keyText.equals("Backspace")) {
             if (nameInput.length() > 0) {
                 nameInput.deleteCharAt(nameInput.length() - 1);
@@ -227,23 +235,35 @@ public class NewCharacter extends BaseMenu {
                 updateStateDisplay();
                 updateAcceptButton();
             }
+        }
+    }
+    
+    /**
+     * Handle key typed event with actual character
+     * This preserves upper/lower case properly
+     */
+    public void handleKeyTyped(char keyChar) {
+        // Filter out control characters (except backspace which is handled in handleKeyPress)
+        if (java.lang.Character.isISOControl(keyChar)) {
             return;
         }
-        if (keyText.length() == 1) {
-            ValidationResult result = nameValidator.validate(keyText);
-            
-            if (result.isValid()) {
-                nameInput.append(keyText);
-                nameDisplayLabel.setText(nameInput.toString());
-                nameDisplayLabel.setForeground(Color.BLACK);
-                updateStateDisplay();
-                updateAcceptButton();
-            } else {
-                nameDisplayLabel.setForeground(Color.RED);
-                Timer timer = new Timer(500, evt -> nameDisplayLabel.setForeground(Color.BLACK));
-                timer.setRepeats(false);
-                timer.start();
-            }
+        
+        // Convert to string for validation
+        String input = String.valueOf(keyChar);
+        ValidationResult result = nameValidator.validate(input);
+        
+        if (result.isValid()) {
+            nameInput.append(keyChar);
+            nameDisplayLabel.setText(nameInput.toString());
+            nameDisplayLabel.setForeground(Color.BLACK);
+            updateStateDisplay();
+            updateAcceptButton();
+        } else {
+            // Show error briefly
+            nameDisplayLabel.setForeground(Color.RED);
+            Timer timer = new Timer(500, evt -> nameDisplayLabel.setForeground(Color.BLACK));
+            timer.setRepeats(false);
+            timer.start();
         }
     }
     

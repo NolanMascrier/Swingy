@@ -201,7 +201,7 @@ class AsciiController {
                     if (choice.toLowerCase().equals("y"))
                         c.equip(it);
                 }
-                exp = Math.round(scene.getLeft().getLevel() * scene.getLeft().getLootChance() * scene.getLeft().getPower()) * 125;
+                exp = scene.getLeft().calculateExp();
                 System.out.println(c.getName() + " gained " + exp + " Experience.");
                 c.grantExperience(exp);
                 map.eliminateMonster();

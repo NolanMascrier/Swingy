@@ -148,11 +148,7 @@ public class GUIController {
                 appendLog("No loot dropped.");
             }
             
-            long exp = Math.round(
-                enemy.getLevel() * 
-                enemy.getLootChance() * 
-                enemy.getPower()
-            ) * 125;
+            long exp = enemy.calculateExp();
             
             appendLog(hero.getName() + " gained " + exp + " experience!");
             this.totalEXP += exp / 10;

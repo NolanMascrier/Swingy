@@ -42,6 +42,11 @@ public class MainFrame extends JFrame {
             public void keyPressed(KeyEvent e) {
                 handleKeyPress(e);
             }
+
+            @Override
+            public void keyTyped(KeyEvent e) {
+                handleKeyTyped(e);  // ← ADD THIS
+            }
         });
 
         setFocusable(true);
@@ -127,5 +132,10 @@ public class MainFrame extends JFrame {
             setVisible(true);
             requestFocusInWindow();
         });
+    }
+
+    private void handleKeyTyped(KeyEvent e) {
+        if (currentMenu instanceof NewCharacter newCharacter)
+            newCharacter.handleKeyTyped(e.getKeyChar());
     }
 }

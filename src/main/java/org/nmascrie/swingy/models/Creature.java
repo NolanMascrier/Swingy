@@ -190,8 +190,17 @@ public class Creature implements Serializable{
         return AttackResult.hit(dmg);
     }
 
-    public String getImageID() {
-        return this.imgID;
+    /**
+     * Returns how much EXP is the creature worth.
+     */
+    public long calculateExp() {
+        long exp = Math.round(
+                this.getLevel() * 
+                this.getLootChance() * 
+                this.getPower()
+            ) * 125;
+        
+        return Math.max(Math.round(exp * (Math.random() / 10 + 0.95)), 1);
     }
 
     @Override
@@ -201,6 +210,10 @@ public class Creature implements Serializable{
             "\nPOWER: " + this.getAttack() +"\nDEFENSE: " + this.getDefense() +
             "\nSPEED: " + this.getSpeed() +"\nDODGE CHANCE: " + this.getDodge() * 100 + "%" +
             "\nCRIT CHANCE: " + this.getCrit() * 100 +"%";
+    }
+
+    public String getImageID() {
+        return this.imgID;
     }
 
     public float getCrit() {
