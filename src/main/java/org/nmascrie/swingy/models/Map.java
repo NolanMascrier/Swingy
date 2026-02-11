@@ -220,7 +220,8 @@ public class Map {
             this.hero.up();
             return new BattleScene(this.hero.getCreature(), this.entityLst.get(pos).getCreature());
         }
-        if (this.get(this.hero.getPosition().x, this.hero.getPosition().y - 1).isAWall())
+        if (null != this.get(this.hero.getPosition().x, this.hero.getPosition().y - 1)
+            && this.get(this.hero.getPosition().x, this.hero.getPosition().y - 1).isAWall())
             return null;
         this.hero.up();
         return null;
@@ -237,7 +238,8 @@ public class Map {
             this.hero.down();
             return new BattleScene(this.hero.getCreature(), this.entityLst.get(pos).getCreature());
         }
-        if (this.get(this.hero.getPosition().x, this.hero.getPosition().y + 1).isAWall())
+        if (null != this.get(this.hero.getPosition().x, this.hero.getPosition().y + 1)
+            && this.get(this.hero.getPosition().x, this.hero.getPosition().y + 1).isAWall())
             return null;
         this.hero.down();
         return null;
@@ -254,7 +256,8 @@ public class Map {
             this.hero.left();
             return new BattleScene(this.hero.getCreature(), this.entityLst.get(pos).getCreature());
         }
-        if (this.get(this.hero.getPosition().x - 1, this.hero.getPosition().y).isAWall())
+        if (null!= this.get(this.hero.getPosition().x - 1, this.hero.getPosition().y)
+            && this.get(this.hero.getPosition().x - 1, this.hero.getPosition().y).isAWall())
             return null;
         this.hero.left();
         return null;
@@ -271,7 +274,8 @@ public class Map {
             this.hero.right();
             return new BattleScene(this.hero.getCreature(), this.entityLst.get(pos).getCreature());
         }
-        if (this.get(this.hero.getPosition().x + 1, this.hero.getPosition().y).isAWall())
+        if (null != this.get(this.hero.getPosition().x + 1, this.hero.getPosition().y)
+            && this.get(this.hero.getPosition().x + 1, this.hero.getPosition().y).isAWall())
             return null;
         this.hero.right();
         return null;
