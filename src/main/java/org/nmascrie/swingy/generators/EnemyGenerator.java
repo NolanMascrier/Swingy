@@ -21,7 +21,7 @@ public class EnemyGenerator {
      * Generates a random rarity for an enemy.
      */
     public MonsterPower generateRarity(float multiplier) {
-        float rnd = ThreadLocalRandom.current().nextFloat() / multiplier;
+        float rnd = ThreadLocalRandom.current().nextFloat();
         float cumulative = 0f;
 
         for (MonsterPower r : MonsterPower.values()) {
@@ -30,7 +30,7 @@ public class EnemyGenerator {
                 return r;
             }
         }
-        return MonsterPower.NORMAL;
+        return MonsterPower.TRASH;
     }
 
     /**
@@ -58,10 +58,10 @@ public class EnemyGenerator {
         MonsterPower power = EnemyGenerator.getInstance().generateRarity(level / 6);
         EnemyType type = EnemyGenerator.getInstance().randomEnemyOfPower(power);
         String name = power.desc + " " + type.name;
-        long atk = Math.round(type.atk * (1 + (level - 1) / 10) * (Math.random() / 5 + 0.95));
-        long def = Math.round(type.def * (1 + (level - 1) / 10) * (Math.random() / 5 + 0.95));
-        long hp = Math.round(type.hp * (1 + (level - 1) / 10) * (Math.random() / 5 + 0.95));
-        long speed = Math.round(type.speed * (1 + (level - 1) / 10) * (Math.random() / 5 + 0.95));
+        long atk = Math.round(type.atk * (1 + (level - 1) / 7) * (Math.random() / 5 + 0.95));
+        long def = Math.round(type.def * (1 + (level - 1) / 7) * (Math.random() / 5 + 0.95));
+        long hp = Math.round(type.hp * (1 + (level - 1) / 3) * (Math.random() / 4 + 0.95));
+        long speed = Math.round(type.speed * (1 + (level - 1) / 7) * (Math.random() / 5 + 0.95));
         float crit = (float)Math.min(type.crit + Math.pow(type.crit, 10 / (level - 0.99)), 0.9);
         float dodge = (float)Math.min(type.dodge + (float)Math.pow(type.dodge, 10 / (level - 0.99)), 0.9);
 

@@ -4,14 +4,14 @@ package org.nmascrie.swingy.enums;
  * Enemy template
  */
 public enum EnemyType {
-    SWARMER(MonsterPower.TRASH, "swarmer", 20, 8, 2, 18, 0.01f, 0.1f, 's', 0.6f),
-    SPAWN(MonsterPower.TRASH, "spawn", 15, 4, 1, 38, 0.01f, 0.15f, 'y', 0.4f),
-    GRUNT(MonsterPower.NORMAL, "grunt", 50, 20, 10, 10, 0.05f, 0.05f, 'G', 0.5f),
-    SLASHER(MonsterPower.NORMAL, "slasher", 40, 26, 5, 10, 0.1f, 0.02f, 'L', 0.25f),
-    GUARD(MonsterPower.NORMAL, "guard", 80, 20, 13, 8, 0.05f, 0.01f, 'T', 0.25f),
-    STALKER(MonsterPower.ELITE, "stalker", 30, 35, 2, 20, 0.1f, 0.25f, 'i', 0.33f),
-    PRAETORIAN(MonsterPower.ELITE, "praetorian", 100, 24, 20, 5, 0.01f, 0.01f, 'P', 0.67f),
-    OPPRESSOR(MonsterPower.BOSS, "oppressor", 250, 35, 20, 6, 0.01f, 0.01f, 'O', 1f);
+    SWARMER(MonsterPower.TRASH, "swarmer", 20, 4, 2, 50, 0.01f, 0.1f, 's', 0.6f),
+    SPAWN(MonsterPower.TRASH, "spawn", 15, 2, 1, 55, 0.01f, 0.15f, 'y', 0.4f),
+    GRUNT(MonsterPower.NORMAL, "grunt", 50, 10, 10, 10, 0.05f, 0.05f, 'G', 0.5f),
+    SLASHER(MonsterPower.NORMAL, "slasher", 40, 13, 5, 10, 0.1f, 0.02f, 'L', 0.25f),
+    GUARD(MonsterPower.NORMAL, "guard", 80, 10, 13, 8, 0.05f, 0.01f, 'T', 0.25f),
+    STALKER(MonsterPower.ELITE, "stalker", 30, 15, 2, 45, 0.1f, 0.25f, 'i', 0.33f),
+    PRAETORIAN(MonsterPower.ELITE, "praetorian", 180, 28, 35, 10, 0.01f, 0.01f, 'P', 0.67f),
+    OPPRESSOR(MonsterPower.BOSS, "oppressor", 350, 45, 40, 15, 0.01f, 0.01f, 'O', 1f);
 
     public final MonsterPower power;
     public final String name;

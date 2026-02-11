@@ -32,13 +32,11 @@ public class MainFrame extends JFrame {
         setSize(1280, 860);
         setLocationRelativeTo(null);
 
-        // Create CardLayout for switching between menus
         cardLayout = new CardLayout();
         cardPanel = new JPanel(cardLayout);
 
         add(cardPanel);
 
-        // Add global key listener
         addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -55,7 +53,6 @@ public class MainFrame extends JFrame {
      * Add new menus by creating instances and calling addMenu()
      */
     private void registerMenus() {
-        // Create menu instances and pass menu switching callback
         addMenu(new MainMenu(this::showMenu));
         addMenu(new NewCharacter(this::showMenu));
         addMenu(new LoadMenu(this::showMenu));
@@ -87,16 +84,13 @@ public class MainFrame extends JFrame {
             return;
         }
 
-        // Deactivate current menu
         if (currentMenu != null) {
             currentMenu.onMenuDeactivated();
         }
 
-        // Switch to new menu
         currentMenu = menu;
         cardLayout.show(cardPanel, menuId);
         
-        // Activate new menu
         currentMenu.onMenuActivated();
         requestFocusInWindow();
         
@@ -110,14 +104,11 @@ public class MainFrame extends JFrame {
         if (currentMenu == null) {
             return;
         }
-
         String keyText = KeyEvent.getKeyText(e.getKeyCode());
         
-        // Only process keyboard input if the current menu allows it
         if (currentMenu.isKeyboardEnabled()) {
             currentMenu.handleKeyPress(keyText);
         } else {
-            // Menu doesn't accept keyboard input, still notify it
             currentMenu.handleKeyPress(keyText);
         }
     }

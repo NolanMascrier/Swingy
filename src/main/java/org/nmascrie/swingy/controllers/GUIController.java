@@ -25,6 +25,8 @@ public class GUIController {
     private BattleScene bs;
     private final StringBuilder eventLog;
     private static GUIController INSTANCE = null;
+    private long totalEXP = 0;
+    private long lastEXP = 0;
 
     private GUIController() {
         this.eventLog = new StringBuilder();
@@ -90,6 +92,8 @@ public class GUIController {
     public void generateMap() {
         long size = (this.hero.getLevel() - 1) * 5 + 10 -(this.hero.getLevel() % 2);
         this.map = new Map(size, this.hero, this.hero.getLevel());
+        this.lastEXP = 0;
+        this.totalEXP = 0;
     }
 
     /**
@@ -148,15 +152,19 @@ public class GUIController {
                 enemy.getLevel() * 
                 enemy.getLootChance() * 
                 enemy.getPower()
-            ) * 70;
+            ) * 125;
             
             appendLog(hero.getName() + " gained " + exp + " experience!");
+            this.totalEXP += exp / 10;
+            this.lastEXP = exp;
             hero.grantExperience(exp);
             
             if (null != map) {
                 map.eliminateMonster();
                 appendLog("Enemy eliminated from map.");
             }
+
+            this.hero.kills += 1;
             
             if (onVictory != null) {
                 onVictory.accept(loot);
@@ -219,5 +227,13 @@ public class GUIController {
 
     public Map getMap() {
         return map;
+    }
+
+    public long getTotalEXP() {
+        return totalEXP;
+    }
+
+    public long getLastEXP() {
+        return lastEXP;
     }
 }

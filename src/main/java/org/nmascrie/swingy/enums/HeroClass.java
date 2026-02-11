@@ -4,10 +4,10 @@ package org.nmascrie.swingy.enums;
  * FOR ROCK AND STONE
  */
 public enum HeroClass {
-    SCOUT(80, 10, 8, 20, 0.05f, 0.12f, "Scout"),
-    DRILLER(120, 25, 5, 10, 0.05f, 0.04f, "Driller"),
-    GUNNER(150, 15, 20, 8, 0.05f, 0.03f, "Gunner"),
-    ENGINEER(100, 12, 12, 12, 0.1f, 0.05f, "Engineer");
+    SCOUT(80, 10, 8, 35, 0.05f, 0.13f, "Scout"),
+    DRILLER(130, 30, 5, 15, 0.05f, 0.04f, "Driller"),
+    GUNNER(170, 15, 25, 8, 0.05f, 0.03f, "Gunner"),
+    ENGINEER(100, 14, 14, 15, 0.11f, 0.05f, "Engineer");
 
     public final int hp;
     public final int atk;

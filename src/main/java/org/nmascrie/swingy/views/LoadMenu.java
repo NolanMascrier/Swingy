@@ -23,7 +23,6 @@ public class LoadMenu extends BaseMenu {
     private JButton backButton;
     private ArrayList<Character> savedCharacters;
     
-    // Map HeroClass to image paths
     private static final Map<HeroClass, String> CLASS_IMAGES = new HashMap<HeroClass, String>() {{
         put(HeroClass.SCOUT, "/images/scout_m.png");
         put(HeroClass.GUNNER, "/images/gunner_m.png");
@@ -31,7 +30,6 @@ public class LoadMenu extends BaseMenu {
         put(HeroClass.DRILLER, "/images/driller_m.png");
     }};
     
-    // Map HeroClass to descriptions
     private static final Map<HeroClass, String> CLASS_DESCRIPTIONS = new HashMap<HeroClass, String>() {{
         put(HeroClass.SCOUT, "Scout");
         put(HeroClass.GUNNER, "Gunner");

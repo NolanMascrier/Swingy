@@ -32,9 +32,7 @@ public abstract class BaseMenu extends JPanel {
      * Called when this menu is deactivated (switching away)
      * Use this to clean up resources if needed
      */
-    public void onMenuDeactivated() {
-        // Override if needed
-    }
+    public void onMenuDeactivated() {}
     
     /**
      * Check if keyboard input is enabled for this menu

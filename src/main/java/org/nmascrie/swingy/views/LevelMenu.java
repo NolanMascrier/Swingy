@@ -31,6 +31,7 @@ public class LevelMenu extends BaseMenu {
     private JTextArea heroDisplayArea;
     private ImageButton startGameButton;
     private ImageButton saveCharacterButton;
+    private ImageButton restCharacterButton;
     
     public LevelMenu(Consumer<String> onMenuSwitch) {
         this.onMenuSwitch = onMenuSwitch;
@@ -42,8 +43,7 @@ public class LevelMenu extends BaseMenu {
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setBackground(new Color(245, 245, 245));
         
-        // Title
-        JLabel titleLabel = new JLabel("THE SPACE RIG", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("DRG Space Rig 17", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
         titleLabel.setForeground(new Color(0,0,0));
         titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
@@ -72,10 +72,18 @@ public class LevelMenu extends BaseMenu {
             this::handleSaveCharacter
         );
         buttonsPanel.add(saveCharacterButton);
+
+        ImageIcon rest = new ImageIcon(getClass().getResource("/images/medbay.png"));
+        restCharacterButton = new ImageButton(
+            "Med Bay",
+            "Rest and get rusty.",
+            rest,
+            this::handleHealthCare
+        );
+        buttonsPanel.add(restCharacterButton);
         
         centerPanel.add(buttonsPanel);
         
-        // Right panel - hero display
         JPanel heroPanel = new JPanel(new BorderLayout());
         heroPanel.setBackground(Color.WHITE);
         heroPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -83,7 +91,7 @@ public class LevelMenu extends BaseMenu {
             BorderFactory.createEmptyBorder(15, 15, 15, 15)
         ));
         
-        JLabel heroTitle = new JLabel("Hero Information", SwingConstants.CENTER);
+        JLabel heroTitle = new JLabel("DRG Performance Report", SwingConstants.CENTER);
         heroTitle.setFont(new Font("Arial", Font.BOLD, 18));
         heroTitle.setForeground(new Color(0,0,0));
         heroTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 10, 0));
@@ -131,8 +139,7 @@ public class LevelMenu extends BaseMenu {
         Character hero = GUIController.getInstance().getHero();
         
         if (hero != null) {
-            // Simply use the hero's toString() method
-            heroDisplayArea.setText(hero.toString());
+            heroDisplayArea.setText(hero.toString() + "\nBugs squashed: " + hero.kills + "\nCaves explored: " + hero.explored);
             heroDisplayArea.setForeground(new Color(0,0,0));
         } else {
             heroDisplayArea.setText("No hero loaded.\n\nPlease create or load a character first.");
@@ -175,27 +182,34 @@ public class LevelMenu extends BaseMenu {
             );
             return;
         }
+        hero.exports();
+        System.out.println("Character saved: " + hero.getName());
         
-        try {
-            hero.exports();
-            
-            System.out.println("Character saved: " + hero.getName());
-            
+        JOptionPane.showMessageDialog(
+            this,
+            "Character \"" + hero.getName() + "\" saved successfully!",
+            "Save Successful",
+            JOptionPane.INFORMATION_MESSAGE
+        );
+    }
+
+    private void handleHealthCare() {
+        int result = JOptionPane.showConfirmDialog(
+            this,
+            "Are you sure ? You will lose half of the needed experience for the next level.",
+            "Med Bay",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
+        
+        if (result == JOptionPane.YES_OPTION) {
+            GUIController.getInstance().getHero().rest();
+            updateHeroDisplay();
             JOptionPane.showMessageDialog(
                 this,
-                "Character \"" + hero.getName() + "\" saved successfully!",
-                "Save Successful",
-                JOptionPane.INFORMATION_MESSAGE
-            );
-        } catch (Exception e) {
-            System.err.println("Error saving character: " + e.getMessage());
-            e.printStackTrace();
-            
-            JOptionPane.showMessageDialog(
-                this,
-                "Failed to save character!\n\nError: " + e.getMessage(),
-                "Save Failed",
-                JOptionPane.ERROR_MESSAGE
+                "You're feeling healthy !",
+                "ALL GOOD",
+                JOptionPane.OK_OPTION
             );
         }
     }

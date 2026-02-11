@@ -81,7 +81,6 @@ public class MapMenu extends BaseMenu {
         
         statsPanel.add(statsScroll, BorderLayout.CENTER);
         
-        // Bottom right - Event log
         JPanel logPanel = new JPanel(new BorderLayout());
         logPanel.setBackground(Color.WHITE);
         logPanel.setBorder(BorderFactory.createCompoundBorder(
@@ -104,7 +103,6 @@ public class MapMenu extends BaseMenu {
         logScroll.setBorder(null);
         logScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         
-        // Auto-scroll to bottom
         logArea.setCaretPosition(logArea.getDocument().getLength());
         
         logPanel.add(logTitle, BorderLayout.NORTH);
@@ -113,11 +111,9 @@ public class MapMenu extends BaseMenu {
         rightPanel.add(statsPanel);
         rightPanel.add(logPanel);
         
-        // Add panels to main layout
         add(leftPanel, BorderLayout.CENTER);
         add(rightPanel, BorderLayout.EAST);
         
-        // Bottom panel - Controls hint
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         bottomPanel.setBackground(new Color(240, 240, 240));
         
@@ -156,14 +152,12 @@ public class MapMenu extends BaseMenu {
      * Update stats and log displays
      */
     private void updateDisplay() {
-        // Update character stats
         Character hero = GUIController.getInstance().getHero();
         if (hero != null) {
             statsArea.setText(hero.toString());
             statsArea.setForeground(Color.BLACK);
         }
         
-        // Update event log
         String log = GUIController.getInstance().getLog();
         logArea.setForeground(Color.BLACK);
         if (log != null && !log.isEmpty()) {
@@ -238,9 +232,11 @@ public class MapMenu extends BaseMenu {
             mapPanel.repaint();
             updateDisplay();
             if (GUIController.getInstance().getMap().victoryCondition()) {
+                GUIController.getInstance().getHero().grantExperience(GUIController.getInstance().getTotalEXP());
+                GUIController.getInstance().getHero().explored += 1;
                 JOptionPane.showConfirmDialog(
                     this,
-                    "You won!",
+                    "You won!\nYou gain a bonus of " + GUIController.getInstance().getTotalEXP() + " EXP.",
                     "Victory!",
                     JOptionPane.OK_OPTION,
                     JOptionPane.INFORMATION_MESSAGE

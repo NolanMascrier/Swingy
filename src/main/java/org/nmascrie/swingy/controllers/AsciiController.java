@@ -201,7 +201,7 @@ class AsciiController {
                     if (choice.toLowerCase().equals("y"))
                         c.equip(it);
                 }
-                exp = Math.round(scene.getLeft().getLevel() * scene.getLeft().getLootChance() * scene.getLeft().getPower()) * 70;
+                exp = Math.round(scene.getLeft().getLevel() * scene.getLeft().getLootChance() * scene.getLeft().getPower()) * 125;
                 System.out.println(c.getName() + " gained " + exp + " Experience.");
                 c.grantExperience(exp);
                 map.eliminateMonster();
@@ -279,6 +279,7 @@ class AsciiController {
             System.out.println("N - Starts a level (Difficulty: " + c.getLevel() + ")");
             System.out.println("S - Saves the character.");
             System.out.println("A - Admire your dwarf.");
+            System.out.println("R - Rest your dwarf. Removes half of your EXP.");
             System.out.println("Q - Quits the game.");
             choice = this.awaitInput();
             switch (choice.toLowerCase().charAt(0)) {
@@ -286,6 +287,7 @@ class AsciiController {
                 case 's' -> this.save(c);
                 case 'a' -> this.admireDwarf(c);
                 case 'q' -> choice = null;
+                case 'r' -> c.rest();
             }
             if (null == choice)
                 break ;

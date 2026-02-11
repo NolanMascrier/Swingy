@@ -69,24 +69,19 @@ public class BattleMenu extends BaseMenu {
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setBackground(new Color(30, 30, 40));
         
-        // Title
         JLabel titleLabel = new JLabel("BATTLE!", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 36));
         titleLabel.setForeground(Color.RED);
         titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         add(titleLabel, BorderLayout.NORTH);
         
-        // Main battle area - 3 columns
         JPanel battlePanel = new JPanel(new GridLayout(1, 3, 15, 0));
         battlePanel.setBackground(new Color(30, 30, 40));
         
-        // Left fighter panel (Player)
         leftPanel = createFighterPanel(true);
         
-        // Center panel - Battle log
         JPanel centerPanel = createBattleLogPanel();
         
-        // Right fighter panel (Enemy)
         rightPanel = createFighterPanel(false);
         
         battlePanel.add(leftPanel);
@@ -95,7 +90,6 @@ public class BattleMenu extends BaseMenu {
         
         add(battlePanel, BorderLayout.CENTER);
         
-        // Bottom panel with status and continue button
         JPanel bottomPanel = new JPanel(new BorderLayout(10, 10));
         bottomPanel.setBackground(new Color(30, 30, 40));
         
@@ -103,7 +97,6 @@ public class BattleMenu extends BaseMenu {
         statusLabel.setFont(new Font("Arial", Font.ITALIC, 14));
         statusLabel.setForeground(Color.LIGHT_GRAY);
         
-        // Continue button (initially hidden)
         continueButton = new JButton("Continue");
         continueButton.setFont(new Font("Arial", Font.BOLD, 16));
         continueButton.setPreferredSize(new Dimension(150, 40));
@@ -131,7 +124,6 @@ public class BattleMenu extends BaseMenu {
             BorderFactory.createEmptyBorder(15, 15, 15, 15)
         ));
         
-        // Fighter image
         JLabel imageLabel = new JLabel();
         imageLabel.setHorizontalAlignment(SwingConstants.CENTER);
         imageLabel.setPreferredSize(new Dimension(200, 250));
@@ -143,12 +135,10 @@ public class BattleMenu extends BaseMenu {
             rightFighterImage = imageLabel;
         }
         
-        // Fighter info panel
         JPanel infoPanel = new JPanel();
         infoPanel.setLayout(new BoxLayout(infoPanel, BoxLayout.Y_AXIS));
         infoPanel.setBackground(new Color(50, 50, 60));
         
-        // Name
         JLabel nameLabel = new JLabel("Fighter");
         nameLabel.setFont(new Font("Arial", Font.BOLD, 18));
         nameLabel.setForeground(Color.WHITE);
@@ -160,7 +150,6 @@ public class BattleMenu extends BaseMenu {
             rightFighterName = nameLabel;
         }
         
-        // HP label
         JLabel hpLabel = new JLabel("HP: 100/100");
         hpLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         hpLabel.setForeground(Color.LIGHT_GRAY);
@@ -172,7 +161,6 @@ public class BattleMenu extends BaseMenu {
             rightFighterHP = hpLabel;
         }
         
-        // Health bar
         JProgressBar healthBar = new JProgressBar(0, 100);
         healthBar.setValue(100);
         healthBar.setStringPainted(true);
@@ -199,7 +187,7 @@ public class BattleMenu extends BaseMenu {
     }
 
     /**
-     * 
+     * Loads the picture associated to the creature.
      */
     private ImageIcon loadCreatureImage(Creature creature, boolean isLeft) {
     try {
@@ -208,14 +196,11 @@ public class BattleMenu extends BaseMenu {
         
         ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));
         
-        // Scale image to fit the panel (180x220)
         Image scaled = icon.getImage().getScaledInstance(180, 220, Image.SCALE_SMOOTH);
         return new ImageIcon(scaled);
         
     } catch (Exception e) {
         System.err.println("Could not load creature image: " + creature.getImageID());
-        e.printStackTrace();
-        // Fall back to placeholder
         return createFighterPlaceholder(isLeft);
     }
 }
@@ -266,7 +251,6 @@ public class BattleMenu extends BaseMenu {
         Graphics2D g2d = image.createGraphics();
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         
-        // Background
         Color bgColor = isLeft ? new Color(100, 149, 237) : new Color(220, 50, 50);
         GradientPaint gradient = new GradientPaint(
             0, 0, bgColor,
@@ -275,14 +259,12 @@ public class BattleMenu extends BaseMenu {
         g2d.setPaint(gradient);
         g2d.fillRect(0, 0, width, height);
         
-        // Border
         g2d.setColor(Color.WHITE);
         g2d.setStroke(new BasicStroke(3));
         g2d.drawRect(0, 0, width - 1, height - 1);
         
-        // Icon
         g2d.setFont(new Font("Arial", Font.BOLD, 80));
-        String icon = isLeft ? "⚔" : "👹";
+        String icon = "FIGHTER";
         FontMetrics fm = g2d.getFontMetrics();
         int textWidth = fm.stringWidth(icon);
         g2d.drawString(icon, (width - textWidth) / 2, height / 2 + 30);
@@ -326,7 +308,6 @@ public class BattleMenu extends BaseMenu {
         appendBattleLog("Let the Battle Begin !");
         appendBattleLog("");
         
-        // Hide continue button
         continueButton.setVisible(false);
         statusLabel.setText("Battle in progress...");
         startBattle();
@@ -344,7 +325,6 @@ public class BattleMenu extends BaseMenu {
         int percentage = (int) ((currentHP * 100) / maxHP);
         healthBar.setValue(Math.max(0, percentage));
         
-        // Change color based on HP
         if (percentage > 60) {
             healthBar.setForeground(isLeft ? new Color(76, 175, 80) : Color.RED);
         } else if (percentage > 30) {
@@ -424,9 +404,9 @@ public class BattleMenu extends BaseMenu {
     private void handleLoot(Item item) {
         statusLabel.setText("Victory! Check the log below.");
         statusLabel.setForeground(Color.GREEN);
+        appendBattleLog("You gained " + GUIController.getInstance().getLastEXP() + " EXP !");
         
         if (item == null) {
-            // No loot, show continue button
             appendBattleLog("");
             appendBattleLog("Press Continue to return to the map.");
             continueButton.setVisible(true);
@@ -461,7 +441,6 @@ public class BattleMenu extends BaseMenu {
             appendBattleLog("Discarded: " + item.getName());
         }
         
-        // Show continue button
         appendBattleLog("");
         appendBattleLog("Press Continue to return to the map.");
         continueButton.setVisible(true);

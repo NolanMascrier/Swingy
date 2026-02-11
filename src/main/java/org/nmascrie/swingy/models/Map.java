@@ -338,4 +338,8 @@ public class Map {
     public Entity getHero() {
         return hero;
     }
+
+    public long getSize() {
+        return this.size;
+    }
 }

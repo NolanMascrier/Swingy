@@ -277,6 +277,14 @@ public class Character extends Creature implements Serializable {
         return this.speak(qips[(int)System.currentTimeMillis() % qips.length]);
     }
 
+    /**
+     * Rests the character, healing them to full but removing half of their EXP.
+     */
+    public void rest() {
+        this.current_hp = this.hitpoints;
+        this.experience /= 2;
+    }
+
     @Override
     public String getImageID() {
         return this.classe.name.toLowerCase();

@@ -28,12 +28,10 @@ import org.nmascrie.swingy.validator.NameValidator.ValidationResult;
  * Demonstrates image buttons, input validation, and state management
  */
 public class NewCharacter extends BaseMenu {
-    // State variables
     private String selectedCharacter = null;
     private final StringBuilder nameInput = new StringBuilder();
     private int index = -1;
     
-    // UI components
     private JLabel instructionLabel;
     private JLabel nameDisplayLabel;
     private JLabel stateDisplayLabel;
