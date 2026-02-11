@@ -277,6 +277,11 @@ public class Character extends Creature implements Serializable {
         return this.speak(qips[(int)System.currentTimeMillis() % qips.length]);
     }
 
+    @Override
+    public String getImageID() {
+        return this.classe.name.toLowerCase();
+    }
+
     public HeroClass getClasse() {
         return classe;
     }

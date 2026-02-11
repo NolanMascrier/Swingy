@@ -106,8 +106,6 @@ public class GUIController {
         // Create and display the GUI
         MainFrame frame = new MainFrame();
         frame.display();
-        
-        System.out.println("Application started. Press W, A, S, or D keys to see validation in action.");
     }
 
         /**

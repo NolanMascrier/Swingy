@@ -179,16 +179,60 @@ public class MapMenu extends BaseMenu {
         GUIController.getInstance().appendLog(message);
         updateDisplay();
     }
+
+    private void checkPlayerDeath() {
+        Character hero = GUIController.getInstance().getHero();
+        if (hero != null && hero.getCurrent_hp() <= 0) {
+            appendLog("=== GAME OVER ===");
+            appendLog(hero.getName() + " has perished...");
+            
+            JOptionPane.showMessageDialog(
+                this,
+                "GAME OVER\n\n" + hero.getName() + " has died.\n\nReturning to character selection.",
+                "Game Over",
+                JOptionPane.ERROR_MESSAGE
+            );
+            
+            if (onMenuSwitch != null) {
+                onMenuSwitch.accept("LoadChar");
+            }
+        }
+    }
     
     /**
      * Handle movement and battle
      */
     private void handleMovement(BattleScene battle) {
         if (battle != null) {
-            appendLog(">>> Enemy encountered! <<<");
-            GUIController.getInstance().setBattleScene(battle);
-            if (onMenuSwitch != null) {
+            int choice = JOptionPane.showConfirmDialog(
+                this,
+                "Enemy spotted!\n\nDo you wish to engage?",
+                "Enemy Encounter",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+            );
+            
+            if (choice == JOptionPane.YES_OPTION) {
+                appendLog(GUIController.getInstance().getHero().getName() + " engages " + battle.getLeft().getName());
+                GUIController.getInstance().setBattleScene(battle);
                 onMenuSwitch.accept("BattleMenu");
+            } else {
+                appendLog("Attempting to flee...");
+                if (Math.random() < 0.5) {
+                    appendLog("Successfully escaped!");
+                    GUIController.getInstance().getMap().cancel();
+                    mapPanel.repaint();
+                } else {
+                    appendLog("Failed to escape! Enemy blocks your path!");
+                    JOptionPane.showMessageDialog(
+                        this,
+                        "You couldn't escape!\n\nThe enemy caught you!",
+                        "Escape Failed",
+                        JOptionPane.WARNING_MESSAGE
+                    );
+                    GUIController.getInstance().setBattleScene(battle);
+                    onMenuSwitch.accept("BattleMenu");
+                }
             }
         } else {
             mapPanel.repaint();
@@ -220,6 +264,10 @@ public class MapMenu extends BaseMenu {
 
         if (GUIController.getInstance().getMap() == null)
             return;
+        if (GUIController.getInstance().getHero() != null && GUIController.getInstance().getHero().getCurrent_hp() <= 0) {
+            checkPlayerDeath();
+            return;
+        }
         if (result.isValid())
         {
             switch (keyText.toUpperCase()) {
@@ -247,6 +295,7 @@ public class MapMenu extends BaseMenu {
     public void onMenuActivated() {
         super.onMenuActivated();
         initializeMap();
+        checkPlayerDeath();
     }
     
     @Override

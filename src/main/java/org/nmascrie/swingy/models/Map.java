@@ -277,6 +277,10 @@ public class Map {
         return null;
     }
 
+    public void cancel() {
+        this.hero.cancel();
+    }
+
     /**
      * Destroys the monster at the player's position.
      */

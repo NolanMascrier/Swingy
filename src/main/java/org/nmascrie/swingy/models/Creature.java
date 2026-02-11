@@ -8,6 +8,7 @@ import org.nmascrie.swingy.enums.AttackResult;
  * Creature class, that holds the data for both players and enemies. 
  */
 public class Creature implements Serializable{
+    private String imgID = "";
     protected String name;
     protected long level = 1;
     protected long experience = 0;
@@ -82,6 +83,38 @@ public class Creature implements Serializable{
     }
 
     /**
+     * Defines a basic creature.
+     * 
+     * @param c_name Name of the creature.
+     * @param c_level Level of the creature.
+     * @param c_atk Attack power of the creature.
+     * @param c_def Defense power of the creature.
+     * @param c_hp Hitpoints of the creature.
+     * @param c_speed Speed of the creature.
+     * @param c_power Monster rarity multiplier.
+     * @param c_char Character of ASCII display.
+     * @param c_crit Crit chance of the creature.
+     * @param c_dodge Dodge chance of the creature.
+     * @param c_id name of the Image file.
+     */
+    public Creature(String c_name, long c_level, long c_atk, long c_def, long c_hp, long c_speed, float c_power,
+                    float c_loot, char c_char, float c_crit, float c_dodge, String c_id) {
+        this.name = c_name;
+        this.level = c_level;
+        this.hitpoints = c_hp;
+        this.current_hp = c_hp;
+        this.defense = c_def;
+        this.attack = c_atk;
+        this.speed = c_speed;
+        this.power = c_power;
+        this.lootChance = c_loot;
+        this.desc = c_char;
+        this.crit = c_crit;
+        this.dodge = c_dodge;
+        this.imgID = c_id;
+    }
+
+    /**
      * Returns the needed experience for the next level.
      */
     protected long calculateNeededExperience() {
@@ -142,8 +175,12 @@ public class Creature implements Serializable{
             dmg *= 2;
         rng_variation = Math.random() / 5 + 0.95;
         dmg = Math.round(dmg * rng_variation);
-        if (dmg <= target.getDefense())
+        if (dmg <= target.getDefense()) {
+            is_kill = target.damage(1);
+            if (is_kill)
+                return AttackResult.kill(1);
             return AttackResult.block();
+        }
         dmg -= target.getDefense();
         is_kill = target.damage(dmg);
         if (is_kill)
@@ -151,6 +188,10 @@ public class Creature implements Serializable{
         if (crit_roll)
             return AttackResult.crit(dmg);
         return AttackResult.hit(dmg);
+    }
+
+    public String getImageID() {
+        return this.imgID;
     }
 
     @Override

@@ -54,7 +54,7 @@ public class BattleScene {
                 case HIT -> logged += this.attacker.getName() + " attacks " + this.attacked.getName() + " and deals " + this.res.getDamage() + " damage.";
                 case CRIT -> logged += this.attacker.getName() + " lands a devastating hit on " + this.attacked.getName() + " and deals " + this.res.getDamage() + " damage!";
                 case DODGE -> logged += this.attacker.getName() + " attacks, but " + this.attacked.getName() + " dodged.";
-                case BLOCK -> logged += this.attacker.getName() + " attacks, but " + this.attacked.getName() + " blocked the hit.";
+                case BLOCK -> logged += this.attacker.getName() + " attacks, but " + this.attacked.getName() + " blocked the hit and took only 1 damage.";
                 case KILL -> logged += this.attacker.getName() + " puts " + this.attacked.getName() + " out of their misery.";
             }
             if (null != this.log)

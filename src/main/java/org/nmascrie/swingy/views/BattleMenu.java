@@ -5,11 +5,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.GradientPaint;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.util.function.Consumer;
 
@@ -17,6 +19,7 @@ import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -46,10 +49,15 @@ public class BattleMenu extends BaseMenu {
     private JTextArea battleLogArea;
     private JProgressBar leftHealthBar;
     private JProgressBar rightHealthBar;
+    private JButton continueButton;
+    private JLabel statusLabel;
+    private JPanel leftPanel;
+    private JPanel rightPanel;
     
     private BattleScene battleScene;
     private Timer battleTimer;
     private boolean battleInProgress = false;
+    private boolean battleEnded = false;
     
     public BattleMenu(Consumer<String> onMenuSwitch) {
         this.onMenuSwitch = onMenuSwitch;
@@ -73,13 +81,13 @@ public class BattleMenu extends BaseMenu {
         battlePanel.setBackground(new Color(30, 30, 40));
         
         // Left fighter panel (Player)
-        JPanel leftPanel = createFighterPanel(true);
+        leftPanel = createFighterPanel(true);
         
         // Center panel - Battle log
         JPanel centerPanel = createBattleLogPanel();
         
         // Right fighter panel (Enemy)
-        JPanel rightPanel = createFighterPanel(false);
+        rightPanel = createFighterPanel(false);
         
         battlePanel.add(leftPanel);
         battlePanel.add(centerPanel);
@@ -87,11 +95,29 @@ public class BattleMenu extends BaseMenu {
         
         add(battlePanel, BorderLayout.CENTER);
         
-        // Bottom status
-        JLabel statusLabel = new JLabel("Battle in progress...", SwingConstants.CENTER);
+        // Bottom panel with status and continue button
+        JPanel bottomPanel = new JPanel(new BorderLayout(10, 10));
+        bottomPanel.setBackground(new Color(30, 30, 40));
+        
+        statusLabel = new JLabel("Battle in progress...", SwingConstants.CENTER);
         statusLabel.setFont(new Font("Arial", Font.ITALIC, 14));
         statusLabel.setForeground(Color.LIGHT_GRAY);
-        add(statusLabel, BorderLayout.SOUTH);
+        
+        // Continue button (initially hidden)
+        continueButton = new JButton("Continue");
+        continueButton.setFont(new Font("Arial", Font.BOLD, 16));
+        continueButton.setPreferredSize(new Dimension(150, 40));
+        continueButton.setVisible(false);
+        continueButton.addActionListener(e -> handleContinue());
+        
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        buttonPanel.setBackground(new Color(30, 30, 40));
+        buttonPanel.add(continueButton);
+        
+        bottomPanel.add(statusLabel, BorderLayout.CENTER);
+        bottomPanel.add(buttonPanel, BorderLayout.SOUTH);
+        
+        add(bottomPanel, BorderLayout.SOUTH);
     }
     
     /**
@@ -171,6 +197,28 @@ public class BattleMenu extends BaseMenu {
         
         return panel;
     }
+
+    /**
+     * 
+     */
+    private ImageIcon loadCreatureImage(Creature creature, boolean isLeft) {
+    try {
+        String imageID = creature.getImageID();
+        String imagePath = "/images/" + imageID + ".png";
+        
+        ImageIcon icon = new ImageIcon(getClass().getResource(imagePath));
+        
+        // Scale image to fit the panel (180x220)
+        Image scaled = icon.getImage().getScaledInstance(180, 220, Image.SCALE_SMOOTH);
+        return new ImageIcon(scaled);
+        
+    } catch (Exception e) {
+        System.err.println("Could not load creature image: " + creature.getImageID());
+        e.printStackTrace();
+        // Fall back to placeholder
+        return createFighterPlaceholder(isLeft);
+    }
+}
     
     /**
      * Create battle log panel
@@ -248,6 +296,7 @@ public class BattleMenu extends BaseMenu {
      */
     private void initializeBattle() {
         battleScene = GUIController.getInstance().getBattleScene();
+        battleEnded = false;
         
         if (battleScene == null) {
             JOptionPane.showMessageDialog(
@@ -259,26 +308,27 @@ public class BattleMenu extends BaseMenu {
             returnToLevel();
             return;
         }
+        Creature leftFighter = battleScene.getRight();  // Player
+        Creature rightFighter = battleScene.getLeft();  // Enemy
+        ImageIcon leftImage = loadCreatureImage(leftFighter, true);
+        leftFighterImage.setIcon(leftImage);
+        ImageIcon rightImage = loadCreatureImage(rightFighter, false);
+        rightFighterImage.setIcon(rightImage);
         
-        // Get fighters
-        Creature leftFighter = battleScene.getLeft();
-        Creature rightFighter = battleScene.getRight();
-        
-        // Update left fighter (player)
         leftFighterName.setText(leftFighter.getName());
         updateFighterHP(leftFighter, leftFighterHP, leftHealthBar, true);
         
-        // Update right fighter (enemy)
         rightFighterName.setText(rightFighter.getName());
         updateFighterHP(rightFighter, rightFighterHP, rightHealthBar, false);
         
-        // Clear log
         battleLogArea.setText("");
-        appendBattleLog("=== BATTLE START ===");
         appendBattleLog(leftFighter.getName() + " vs " + rightFighter.getName());
+        appendBattleLog("Let the Battle Begin !");
         appendBattleLog("");
         
-        // Start automated battle
+        // Hide continue button
+        continueButton.setVisible(false);
+        statusLabel.setText("Battle in progress...");
         startBattle();
     }
     
@@ -317,8 +367,6 @@ public class BattleMenu extends BaseMenu {
      */
     private void startBattle() {
         battleInProgress = true;
-        
-        // Timer for automated battle progression (125ms between moves)
         battleTimer = new Timer(125, e -> {
             if (!battleInProgress) {
                 battleTimer.stop();
@@ -326,7 +374,6 @@ public class BattleMenu extends BaseMenu {
             }
             processBattleMove();
         });
-        
         battleTimer.start();
     }
     
@@ -335,25 +382,18 @@ public class BattleMenu extends BaseMenu {
      */
     private void processBattleMove() {
         BattleScene.BattleLog log = battleScene.nextMove();
-        
         if (log == null) {
-            // Battle ended
             endBattle();
             return;
         }
-        
-        // Display battle log
         appendBattleLog(log.toString());
         
-        // Update HP displays
-        updateFighterHP(battleScene.getLeft(), leftFighterHP, leftHealthBar, true);
-        updateFighterHP(battleScene.getRight(), rightFighterHP, rightHealthBar, false);
+        updateFighterHP(battleScene.getRight(), leftFighterHP, leftHealthBar, true);
+        updateFighterHP(battleScene.getLeft(), rightFighterHP, rightHealthBar, false);
         
-        // Check if battle should end
         if (battleScene.getLeft().getCurrent_hp() <= 0 || 
             battleScene.getRight().getCurrent_hp() <= 0) {
-            // One more move to finish
-            battleTimer.setDelay(500); // Pause before ending
+            battleTimer.setDelay(500);
         }
     }
     
@@ -362,27 +402,39 @@ public class BattleMenu extends BaseMenu {
      */
     private void endBattle() {
         battleInProgress = false;
+        battleEnded = true;
+        
         if (battleTimer != null) {
             battleTimer.stop();
         }
         
-        // Let GUIController handle the battle results
-        GUIController.getInstance().handleBattleEnd(this::returnToLevel, this::handleLoot);
+        GUIController.getInstance().handleBattleEnd(
+            () -> {
+                statusLabel.setText("Defeat! Press Continue to return...");
+                statusLabel.setForeground(Color.RED);
+                continueButton.setVisible(true);
+            },
+            this::handleLoot
+        );
     }
     
     /**
      * Handle loot after victory
      */
     private void handleLoot(Item item) {
+        statusLabel.setText("Victory! Check the log below.");
+        statusLabel.setForeground(Color.GREEN);
+        
         if (item == null) {
-            // No loot, just return
-            returnToLevel();
+            // No loot, show continue button
+            appendBattleLog("");
+            appendBattleLog("Press Continue to return to the map.");
+            continueButton.setVisible(true);
             return;
         }
         
         Character hero = GUIController.getInstance().getHero();
         
-        // Show loot dialog
         String message = "Loot found: " + item.toString() + "\n\n";
         
         Item equipped = hero.getEquipped(item.getType());
@@ -409,10 +461,17 @@ public class BattleMenu extends BaseMenu {
             appendBattleLog("Discarded: " + item.getName());
         }
         
-        // Small delay before returning
-        Timer returnTimer = new Timer(1000, e -> returnToLevel());
-        returnTimer.setRepeats(false);
-        returnTimer.start();
+        // Show continue button
+        appendBattleLog("");
+        appendBattleLog("Press Continue to return to the map.");
+        continueButton.setVisible(true);
+    }
+    
+    /**
+     * Handle continue button click
+     */
+    private void handleContinue() {
+        returnToLevel();
     }
     
     /**
@@ -431,12 +490,16 @@ public class BattleMenu extends BaseMenu {
     
     @Override
     public void handleKeyPress(String keyText) {
-        // No keyboard input during automated battle
+        if (battleEnded && (keyText.equals("Enter") || keyText.equals("Space"))) {
+            if (continueButton.isVisible()) {
+                handleContinue();
+            }
+        }
     }
     
     @Override
     public boolean isKeyboardEnabled() {
-        return false;
+        return true;
     }
     
     @Override
@@ -450,11 +513,11 @@ public class BattleMenu extends BaseMenu {
     public void onMenuDeactivated() {
         super.onMenuDeactivated();
         
-        // Stop battle timer if running
         if (battleTimer != null && battleTimer.isRunning()) {
             battleTimer.stop();
         }
         
         battleInProgress = false;
+        battleEnded = false;
     }
 }

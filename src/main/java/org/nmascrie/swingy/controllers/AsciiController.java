@@ -231,7 +231,7 @@ class AsciiController {
                 case 'd' -> scene = map.down();
                 case 'l' -> scene = map.left();
                 case 'r' -> scene = map.right();
-                case 'z' -> map.getHero().cancel();
+                case 'z' -> map.cancel();
                 case 'k' -> map.dig();
                 case 'v' -> msg = "For rock and stone !";
                 case 'p' -> this.admireDwarf(c);

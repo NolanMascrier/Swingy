@@ -65,6 +65,6 @@ public class EnemyGenerator {
         float crit = (float)Math.min(type.crit + Math.pow(type.crit, 10 / (level - 0.99)), 0.9);
         float dodge = (float)Math.min(type.dodge + (float)Math.pow(type.dodge, 10 / (level - 0.99)), 0.9);
 
-        return new Creature(name, level, atk, def, hp, speed, power.dropMultiplier, power.dropChance, type.desc, crit, dodge);
+        return new Creature(name, level, atk, def, hp, speed, power.dropMultiplier, power.dropChance, type.desc, crit, dodge, type.name);
     }
 }
