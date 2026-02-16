@@ -2,7 +2,10 @@ All content belong to Ghost Ship Game. It's just a funny little project for scho
 
 # FOR ROCK AND STONE
 
-# Compilation
+## Known issues
+* Input validator for the name in console mode bugs out
+
+## Compilation
 
 Compile directly from your IDE or by using `mvn`. To launch, use `java -jar target/Swingy-1.0-SNAPSHOT-jar-with-dependencies.jar gui` for the visual version or `java -jar target/Swingy-1.0-SNAPSHOT-jar-with-dependencies.jar` for the console one.
 
