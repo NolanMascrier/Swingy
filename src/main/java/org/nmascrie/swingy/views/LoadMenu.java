@@ -47,7 +47,7 @@ public class LoadMenu extends BaseMenu {
         setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         setBackground(new Color(245, 245, 245));
         
-        JLabel titleLabel = new JLabel("Select your Dwarf", SwingConstants.CENTER);
+        JLabel titleLabel = new JLabel("Space Rig Dorms", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
         titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 20, 0));
         titleLabel.setForeground(Color.BLACK);
@@ -56,8 +56,9 @@ public class LoadMenu extends BaseMenu {
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.setBackground(new Color(245, 245, 245));
         
-        JLabel instructionLabel = new JLabel("Select a character to continue:", SwingConstants.CENTER);
+        JLabel instructionLabel = new JLabel("Select a Dwarf", SwingConstants.CENTER);
         instructionLabel.setFont(new Font("Arial", Font.PLAIN, 16));
+        instructionLabel.setForeground(Color.BLACK);
         instructionLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
         centerPanel.add(instructionLabel, BorderLayout.NORTH);
         
@@ -82,7 +83,7 @@ public class LoadMenu extends BaseMenu {
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 10));
         bottomPanel.setBackground(new Color(245, 245, 245));
         
-        JButton createNewButton = new JButton("Create New Character");
+        JButton createNewButton = new JButton("New Dwarf");
         createNewButton.setFont(new Font("Arial", Font.BOLD, 16));
         createNewButton.setPreferredSize(new Dimension(200, 40));
         createNewButton.addActionListener(e -> {
@@ -142,7 +143,7 @@ public class LoadMenu extends BaseMenu {
         try {
             icon = new ImageIcon(getClass().getResource(imagePath));
         } catch (Exception e) {
-            System.err.println("Could not load image: " + imagePath);
+            System.err.println("ERROR:: Could not load image: " + imagePath);
         }
         
         ImageButton button = new ImageButton(

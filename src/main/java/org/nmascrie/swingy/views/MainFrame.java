@@ -75,7 +75,7 @@ public class MainFrame extends JFrame {
         String menuId = menu.getMenuId();
         menus.put(menuId, menu);
         cardPanel.add(menu, menuId);
-        System.out.println("Registered menu: " + menuId);
+        System.out.println("DEBUG:: Registered menu -> " + menuId);
     }
 
     /**
@@ -85,7 +85,7 @@ public class MainFrame extends JFrame {
     public void showMenu(String menuId) {
         BaseMenu menu = menus.get(menuId);
         if (menu == null) {
-            System.err.println("Menu not found: " + menuId);
+            System.err.println("DEBUG:: Menu not found -> " + menuId);
             return;
         }
 
@@ -99,7 +99,7 @@ public class MainFrame extends JFrame {
         currentMenu.onMenuActivated();
         requestFocusInWindow();
         
-        System.out.println("Switched to: " + menuId);
+        System.out.println("DEBUG:: Frame -> " + menuId);
     }
 
     /**

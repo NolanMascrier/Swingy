@@ -200,7 +200,7 @@ public class BattleMenu extends BaseMenu {
         return new ImageIcon(scaled);
         
     } catch (Exception e) {
-        System.err.println("Could not load creature image: " + creature.getImageID());
+        System.err.println("ERROR:: Could not load creature image: " + creature.getImageID());
         return createFighterPlaceholder(isLeft);
     }
 }
@@ -485,7 +485,6 @@ public class BattleMenu extends BaseMenu {
     public void onMenuActivated() {
         super.onMenuActivated();
         initializeBattle();
-        System.out.println("Battle menu activated");
     }
     
     @Override

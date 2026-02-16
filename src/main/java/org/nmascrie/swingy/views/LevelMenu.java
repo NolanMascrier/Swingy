@@ -183,7 +183,7 @@ public class LevelMenu extends BaseMenu {
             return;
         }
         hero.exports();
-        System.out.println("Character saved: " + hero.getName());
+        System.out.println("DEBUG:: Character saved: " + hero.getName());
         
         JOptionPane.showMessageDialog(
             this,

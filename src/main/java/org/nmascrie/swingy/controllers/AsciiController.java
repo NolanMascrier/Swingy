@@ -10,6 +10,8 @@ import org.nmascrie.swingy.models.BattleScene;
 import org.nmascrie.swingy.models.Character;
 import org.nmascrie.swingy.models.Item;
 import org.nmascrie.swingy.models.Map;
+import org.nmascrie.swingy.validator.ASCIIValidator;
+import org.nmascrie.swingy.validator.ASCIIValidator.ValidationResult;
 
 /**
  * Controller to handle the terminal mode.
@@ -17,10 +19,13 @@ import org.nmascrie.swingy.models.Map;
 class AsciiController {
     private final Scanner scan;
     private final ArrayList<Character> charList;
+    private final ASCIIValidator validator;
+    private String errMessage = "";
 
     public AsciiController() {
         this.scan = new Scanner(System.in);
         this.charList = new ArrayList<>();
+        this.validator = new ASCIIValidator();
     }
 
     /**
@@ -30,12 +35,21 @@ class AsciiController {
         String scanned;
         try {
             scanned = this.scan.nextLine();
-            @SuppressWarnings("unused")
-            char a = scanned.charAt(0);
+            ValidationResult result = validator.validate(scanned);
+            if (result.isValid())
+            {
+                this.errMessage = "";
+                return scanned;
+            }
+            else
+            {
+                this.errMessage = scanned + " is not a Valid Input.\n";
+                return " ";
+            }
+            
         } catch (StringIndexOutOfBoundsException e) {
             return " ";
         }
-        return scanned;
     }
 
     /**
@@ -89,6 +103,7 @@ class AsciiController {
      */
     private void clearTerminal() {
         System.out.print("\033\143");
+        System.out.print(errMessage);
     }
 
     /**

@@ -44,6 +44,7 @@ public class MainMenu extends BaseMenu {
 
         JLabel titleLabel = new JLabel("Welcome to the Space Rig", SwingConstants.CENTER);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 32));
+        titleLabel.setForeground(Color.BLACK);
         add(titleLabel, BorderLayout.NORTH);
 
         JPanel centerPanel = new JPanel(new GridLayout(2, 2, 20, 20));
@@ -112,7 +113,6 @@ public class MainMenu extends BaseMenu {
     private void handleClick(String option) {
         statusLabel.setForeground(Color.BLACK);
         ClickValidator.ValidationResult result = clickValidator.validateOption(option);
-        System.out.println("Click validation: " + result.getMessage());
         if (option.equals("Create a new Dwarf")) {
             if (onMenuSwitch != null) {
                 onMenuSwitch.accept("NewChar");
@@ -132,7 +132,7 @@ public class MainMenu extends BaseMenu {
 
     @Override
     public void handleKeyPress(String keyText) {
-        System.out.println("Nice try; Only clicks in here.");
+        System.out.println("DEBUG:: Nice try; Only clicks in here.");
         statusLabel.setForeground(Color.RED);
         
         Timer timer = new Timer(2000, evt -> statusLabel.setForeground(Color.BLACK));

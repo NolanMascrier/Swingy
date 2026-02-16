@@ -55,10 +55,16 @@ public class GUIController {
         this.hero.exports();
     }
 
+    public void setHero(String name, HeroClass classe) {
+        this.hero = new Character(name, classe);
+        this.hero.exports();
+        System.out.println("Set character " + this.hero.getName() + ", lvl " + this.hero.getLevel() + " " + this.hero.getClasse());
+    }
+
     public void setHero(Character c) {
         this.hero = c;
-        c.exports();
-        System.out.println("Set character " + c.getName() + ", lvl " + c.getLevel() + " " + c.getClasse());
+        this.hero.exports();
+        System.out.println("Set character " + this.hero.getName() + ", lvl " + this.hero.getLevel() + " " + this.hero.getClasse());
     }
 
     /**

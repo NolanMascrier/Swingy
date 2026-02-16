@@ -67,6 +67,7 @@ public class NewCharacter extends BaseMenu {
         
         instructionLabel = new JLabel("Choose your character and enter your name:", SwingConstants.CENTER);
         instructionLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        instructionLabel.setForeground(Color.BLACK);
         add(instructionLabel, BorderLayout.NORTH);
         
         JPanel centerPanel = new JPanel(new BorderLayout(20, 20));
@@ -98,12 +99,13 @@ public class NewCharacter extends BaseMenu {
         ));
         rightPanel.setPreferredSize(new Dimension(250, 0));
         
-        JLabel stateTitle = new JLabel("Current State", SwingConstants.CENTER);
+        JLabel stateTitle = new JLabel("Dwarven CV", SwingConstants.CENTER);
+        stateTitle.setForeground(Color.BLACK);
         stateTitle.setFont(new Font("Arial", Font.BOLD, 18));
         
         stateDisplayLabel = new JLabel("<html><center>No character selected<br><br>Name: (empty)</center></html>");
         stateDisplayLabel.setFont(new Font("Arial", Font.PLAIN, 14));
-        stateDisplayLabel.setForeground(new Color(0, 0, 0));
+        stateDisplayLabel.setForeground(Color.BLACK);
         stateDisplayLabel.setHorizontalAlignment(SwingConstants.CENTER);
         stateDisplayLabel.setVerticalAlignment(SwingConstants.TOP);
         
@@ -223,10 +225,6 @@ public class NewCharacter extends BaseMenu {
      */
     @Override
     public void handleKeyPress(String keyText) {
-        // This method receives the keyText from MainFrame
-        // We need to handle it differently for text input
-        
-        // For backspace
         if (keyText.equals("Back Space") || keyText.equals("Backspace")) {
             if (nameInput.length() > 0) {
                 nameInput.deleteCharAt(nameInput.length() - 1);
@@ -243,12 +241,9 @@ public class NewCharacter extends BaseMenu {
      * This preserves upper/lower case properly
      */
     public void handleKeyTyped(char keyChar) {
-        // Filter out control characters (except backspace which is handled in handleKeyPress)
         if (java.lang.Character.isISOControl(keyChar)) {
             return;
         }
-        
-        // Convert to string for validation
         String input = String.valueOf(keyChar);
         ValidationResult result = nameValidator.validate(input);
         
@@ -259,7 +254,6 @@ public class NewCharacter extends BaseMenu {
             updateStateDisplay();
             updateAcceptButton();
         } else {
-            // Show error briefly
             nameDisplayLabel.setForeground(Color.RED);
             Timer timer = new Timer(500, evt -> nameDisplayLabel.setForeground(Color.BLACK));
             timer.setRepeats(false);

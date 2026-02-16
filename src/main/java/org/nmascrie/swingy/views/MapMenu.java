@@ -177,7 +177,6 @@ public class MapMenu extends BaseMenu {
     private void checkPlayerDeath() {
         Character hero = GUIController.getInstance().getHero();
         if (hero != null && hero.getCurrent_hp() <= 0) {
-            appendLog("=== GAME OVER ===");
             appendLog(hero.getName() + " has perished...");
             
             JOptionPane.showMessageDialog(
