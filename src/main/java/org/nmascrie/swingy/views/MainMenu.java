@@ -20,20 +20,16 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.Timer;
 
-import org.nmascrie.swingy.validator.ClickValidator;
-
 /**
  * Menu 1: Click-only interface
  * Demonstrates a menu where keyboard input is disabled
  */
 public class MainMenu extends BaseMenu {
     private JLabel statusLabel;
-    private final ClickValidator clickValidator;
     private final Consumer<String> onMenuSwitch;
 
     public MainMenu(Consumer<String> onMenuSwitch) {
         this.onMenuSwitch = onMenuSwitch;
-        this.clickValidator = new ClickValidator();
         initializeUI();
     }
 
@@ -112,7 +108,6 @@ public class MainMenu extends BaseMenu {
 
     private void handleClick(String option) {
         statusLabel.setForeground(Color.BLACK);
-        ClickValidator.ValidationResult result = clickValidator.validateOption(option);
         if (option.equals("Create a new Dwarf")) {
             if (onMenuSwitch != null) {
                 onMenuSwitch.accept("NewChar");
