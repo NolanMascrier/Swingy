@@ -3,12 +3,12 @@ package org.nmascrie.swingy.models;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.Properties;
 
 import org.nmascrie.swingy.enums.HeroClass;
 import org.nmascrie.swingy.enums.ItemType;
+import org.nmascrie.swingy.enums.Rarity;
 
 /**
  * A character is a specific creature that has a class and items.
@@ -186,8 +186,31 @@ public class Character extends Creature implements Serializable {
      */
     public void exports() {
         File path = new File("saves/" + this.getName() + ".dwarf");
-        try (ObjectOutputStream write = new ObjectOutputStream (new FileOutputStream(path))) {
-            write.writeObject(this);
+        Properties props = new Properties();
+        
+        props.setProperty("name", this.name);
+        props.setProperty("class", this.classe.name());
+        props.setProperty("level", String.valueOf(this.level));
+        props.setProperty("experience", String.valueOf(this.experience));
+        props.setProperty("hitpoints", String.valueOf(this.hitpoints));
+        props.setProperty("current_hp", String.valueOf(this.current_hp));
+        props.setProperty("attack", String.valueOf(this.attack));
+        props.setProperty("defense", String.valueOf(this.defense));
+        props.setProperty("speed", String.valueOf(this.speed));
+        props.setProperty("crit", String.valueOf(this.crit));
+        props.setProperty("dodge", String.valueOf(this.dodge));
+        props.setProperty("kills", String.valueOf(this.kills));
+        props.setProperty("explored", String.valueOf(this.explored));
+        
+        saveItem(props, "helmet", this.helmet);
+        saveItem(props, "armor", this.armor);
+        saveItem(props, "weapon", this.weapon);
+        saveItem(props, "boots", this.boots);
+        saveItem(props, "belt", this.belt);
+        saveItem(props, "ammos", this.ammos);
+        
+        try (FileOutputStream out = new FileOutputStream(path)) {
+            props.store(out, "Character Save File");
         } catch (Exception e) {
             System.err.println(e);
         }
@@ -195,17 +218,67 @@ public class Character extends Creature implements Serializable {
 
     public static Character imports(String char_name) {
         File path = new File("saves/" + char_name);
-        Object data = null;
-
-        try(ObjectInputStream inFile = new ObjectInputStream(new FileInputStream(path)))
-        {
-            data = inFile.readObject();
-            return (Character)data;
-        } catch(Exception e)
-        {
+        Properties props = new Properties();
+        
+        try (FileInputStream in = new FileInputStream(path)) {
+            props.load(in);
+            
+            String name = props.getProperty("name");
+            HeroClass hc = HeroClass.valueOf(props.getProperty("class"));
+            Character character = new Character(name, hc);
+            
+            character.level = Long.parseLong(props.getProperty("level"));
+            character.experience = Long.parseLong(props.getProperty("experience"));
+            character.hitpoints = Long.parseLong(props.getProperty("hitpoints"));
+            character.current_hp = Long.parseLong(props.getProperty("current_hp"));
+            character.attack = Long.parseLong(props.getProperty("attack"));
+            character.defense = Long.parseLong(props.getProperty("defense"));
+            character.speed = Long.parseLong(props.getProperty("speed"));
+            character.crit = Float.parseFloat(props.getProperty("crit"));
+            character.dodge = Float.parseFloat(props.getProperty("dodge"));
+            character.kills = Integer.parseInt(props.getProperty("kills"));
+            character.explored = Integer.parseInt(props.getProperty("explored"));
+            
+            character.helmet = loadItem(props, "helmet");
+            character.armor = loadItem(props, "armor");
+            character.weapon = loadItem(props, "weapon");
+            character.boots = loadItem(props, "boots");
+            character.belt = loadItem(props, "belt");
+            character.ammos = loadItem(props, "ammos");
+            
+            return character;
+        } catch (Exception e) {
             System.err.println(e);
+            return null;
         }
-        return (Character)data;
+    }
+
+    /**
+     * Saves an item into a properties data.
+     */
+    private void saveItem(Properties props, String slot, Item item) {
+        if (item != null) {
+            props.setProperty(slot + ".name", item.getName());
+            props.setProperty(slot + ".level", String.valueOf(item.getLevel()));
+            props.setProperty(slot + ".value", String.valueOf(item.getValue()));
+            props.setProperty(slot + ".type", item.getType().name());
+            props.setProperty(slot + ".rarity", item.getRarity().name());
+        }
+    }
+
+    /**
+     * Loads an item from a Properties data.
+     */
+    private static Item loadItem(Properties props, String slot) {
+        String name = props.getProperty(slot + ".name");
+        if (name == null) return null;
+        
+        long level = Long.parseLong(props.getProperty(slot + ".level"));
+        float value = Float.parseFloat(props.getProperty(slot + ".value"));
+        ItemType type = ItemType.valueOf(props.getProperty(slot + ".type"));
+        Rarity rarity = Rarity.valueOf(props.getProperty(slot + ".rarity"));
+        
+        return new Item(name, level, value, type, rarity);
     }
 
     /**
